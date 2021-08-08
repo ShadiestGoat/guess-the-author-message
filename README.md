@@ -1,7 +1,26 @@
 # Guess Who Sent That Message
 
 A discord bot, which acts as a game. You can guess the author of a message :D
-## Preparation
+
+## Prerequisites
+
+Before starting, you need the following:
+
+1. A discord account, and a token to it \([before asking how to get it](https://www.just-fucking-google.it/?s=how%20to%20get%20discord%20user%20token&e=fingerxyz)\)
+
+2. A discord bot token
+
+3. A discord server that has the following properties:
+
+| Property | Type |
+|:--:|:--:|
+| The downloaded channel has over 10 authors | Recommendation |
+| The downloaded channel has over 1500 messages | Recommendation |
+| You must have permission to read message history of the downloaded channel | Needed |
+| The bot must have permission to read & send messages in the CATEGORY that will be specified with the PARENT_ID | Needed |
+
+4. The permission of the other members of the server to play this game. 
+    1. If some do not give permission, please add their user id to the REMOVE section of the download config.
 
 ## Set Up
 
@@ -14,6 +33,7 @@ A discord bot, which acts as a game. You can guess the author of a message :D
 4. `npm run build`
 
 Then you will need to download and parse messages to guess. 
+
 
 ## Downloader
 
@@ -55,6 +75,8 @@ The config file is mentioned in the env section.
 |    REMOVE     |                               The IDs authors who's messages should be ignored                                |       String Array       |
 |     ALIAS     | Alias the authors IDs. If an author id is in the keys of the object, the value of that key will be the new id | Object `old id`:`new id` |
 
+Note, the script does not auto-ignore bots, or old users (who have left), so there may be automated messages and broken mentions. Please do not manually remove messages/authors from the downloaded file, please re-download the messages with added ids to the REMOVE/ALIAS sections. 
+
 ### Running
 
 To run the download process it is pretty simple:
@@ -71,12 +93,22 @@ This section is dedicated to the actual bot part of this project. The setup of t
 
 Same as before, this can be used with .env file or command line
 
-|     Variable     |                                                               Explanation                                                                |    Default    | Required |
-|:----------------:|:----------------------------------------------------------------------------------------------------------------------------------------:|:-------------:|:--------:|
-| COMMANDS_UPDATED | Weather or not the interaction commands have been updated. Recommended for use in cl only! It is important to run this on the first run! |     false     |   :x:    |
-|    USER_DATA     |                                                    The location of the user data file                                                    | userData.json |   :x:    |
-|  QUESTION_DATA   |                                                  The location of the question data file                                                  |  qData.json   |   :x:    |
-|     MSG_DATA     |                       The location of the downloaded message data. It can be carried over from the download script                       |   msgs.json   |   :x:    |
-|    DUEL_DATA     |                                                      The location of the duel data                                                       |  duels.json   |   :x:    |
-|    PARENT_ID     |                    The ID of the parent channel (category) that the bot will work in. Also the location of the duels                     |   \<none\>    |  :heavy_check_mark:  |
-|      TOKEN       |                                                         The token of the **bot**                                                         |   \<none\>    |  :heavy_check_mark:  |
+|     Variable     |                                                               Explanation                                                                |    Default    |      Required      |
+|:----------------:|:----------------------------------------------------------------------------------------------------------------------------------------:|:-------------:|:------------------:|
+| COMMANDS_UPDATED | Weather or not the interaction commands have been updated. Recommended for use in cl only! It is important to run this on the first run! |     false     |        :x:         |
+|    USER_DATA     |                                                    The location of the user data file                                                    | userData.json |        :x:         |
+|  QUESTION_DATA   |                                                  The location of the question data file                                                  |  qData.json   |        :x:         |
+|     MSG_DATA     |                       The location of the downloaded message data. It can be carried over from the download script                       |   msgs.json   |        :x:         |
+|    DUEL_DATA     |                                                      The location of the duel data                                                       |  duels.json   |        :x:         |
+|    PARENT_ID     |                    The ID of the parent channel (category) that the bot will work in. Also the location of the duels                     |   \<none\>    | :heavy_check_mark: |
+|      TOKEN       |                                                         The token of the **bot**                                                         |   \<none\>    | :heavy_check_mark: |
+
+### Running
+
+Once the env has been set up, all you do is just run it:
+
+`npm run start`
+
+## Roadmap/TODO
+
+- [ ] make the strings more configurable! Eg. error messages, correct/wrong messages, etc

@@ -8,11 +8,15 @@ import { exit } from "process";
 
 dotenv.config()
 
-const {TOKEN, COMMANDS_UPDATED} = process.env
-if (!process.env.PARENT_ID) {
-    console.error("PARENT_ID is a required env variable!")
-    exit(2)
-}
+const {TOKEN, COMMANDS_UPDATED} = process.env;
+// check the env variables
+[
+    "PARENT_ID",
+    "TOKEN",
+].forEach((env) => {
+    if (!process.env[env]) throw `env variable ${env} is required!`
+})
+
 
 const client = new Client({
     intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"],

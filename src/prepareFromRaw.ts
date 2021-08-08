@@ -7,6 +7,14 @@ import { rand } from "./Components/tools"
 
 // This is the downloader section
 
+// check the env variables
+[
+    "DW_CHANNEL",
+    "DW_TOKEN",
+].forEach((env) => {
+    if (!process.env[env]) throw `env variable ${env} is required!`
+})
+
 type Message<T extends boolean> = {
     id: string,
     content: string,
@@ -79,8 +87,6 @@ async function main():Promise<void> {
     }
     const author_alias:Record<string, string> = conf.ALIAS ?? {}
     const author_rm:string[] = conf.REMOVE ?? []
-    if (!DW_TOKEN || typeof DW_TOKEN != "string") throw "No Token!"
-    if (!DW_CHANNEL || typeof DW_CHANNEL != "string") throw "No channel use DW_CHANNEL!"
     let first = true
     let done = false
     const msgs:CoolMessages = {authors: [], last: 0, msgs: {}}
