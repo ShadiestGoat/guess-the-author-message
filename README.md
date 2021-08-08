@@ -5,10 +5,13 @@ A discord bot, which acts as a game. You can guess the author of a message :D
 
 ## Set Up
 
-`git clone https://thisrepo.auiosjkmsajio dkask l,msdaodkls,a`
-`cd guessthemessage`
-`npm i`
-`npm run build`
+1. `git clone https://thisrepo.auiosjkmsajio dkask l,msdaodkls,a`
+
+2. `cd guessthemessage`
+
+3. `npm i`
+
+4. `npm run build`
 
 Then you will need to download and parse messages to guess. 
 
@@ -26,10 +29,10 @@ This needs a couple of env variables
 
 |  Variable  |                                                                 Explanation                                                                  |    Default    | Required |
 |:----------:|:--------------------------------------------------------------------------------------------------------------------------------------------:|:-------------:|:--------:|
-|  DW_TOKEN  | Your user token. This will be used to download messages, since discord no longer allows for bots to do that. It is only used in this script. |   \<none\>    |  :tick:  |
-| DW_CHANNEL |                                                     Channel ID you want to download from                                                     |   \<none\>    |  :tick:  |
-|  MSG_DATA  |                                         The name of the file that the messages will be downloaded to                                         |   msgs.json   |   :X:    |
-|  DW_CONF   |                               The name/location of the file that has the config mentioned in the next section                                | dwConfig.json |   :X:    |
+|  DW_TOKEN  | Your user token. This will be used to download messages, since discord no longer allows for bots to do that. It is only used in this script. |   \<none\>    |  :heavy_check_mark:  |
+| DW_CHANNEL |                                                     Channel ID you want to download from                                                     |   \<none\>    |  :heavy_check_mark:  |
+|  MSG_DATA  |                                         The name of the file that the messages will be downloaded to                                         |   msgs.json   |   :x:    |
+|  DW_CONF   |                               The name/location of the file that has the config mentioned in the next section                                | dwConfig.json |   :x:    |
 
 These variables can either be set through a .env file or as command variables:
 
@@ -70,10 +73,10 @@ Same as before, this can be used with .env file or command line
 
 |     Variable     |                                                               Explanation                                                                |    Default    | Required |
 |:----------------:|:----------------------------------------------------------------------------------------------------------------------------------------:|:-------------:|:--------:|
-| COMMANDS_UPDATED | Weather or not the interaction commands have been updated. Recommended for use in cl only! It is important to run this on the first run! |     false     |   :X:    |
-|    USER_DATA     |                                                    The location of the user data file                                                    | userData.json |   :X:    |
-|  QUESTION_DATA   |                                                  The location of the question data file                                                  |  qData.json   |   :X:    |
-|     MSG_DATA     |                       The location of the downloaded message data. It can be carried over from the download script                       |   msgs.json   |   :X:    |
-|    DUEL_DATA     |                                                      The location of the duel data                                                       |  duels.json   |   :X:    |
-|    PARENT_ID     |                    The ID of the parent channel (category) that the bot will work in. Also the location of the duels                     |   \<none\>    |  :tick:  |
-|      TOKEN       |                                                         The token of the **bot**                                                         |   \<none\>    |  :tick:  |
+| COMMANDS_UPDATED | Weather or not the interaction commands have been updated. Recommended for use in cl only! It is important to run this on the first run! |     false     |   :x:    |
+|    USER_DATA     |                                                    The location of the user data file                                                    | userData.json |   :x:    |
+|  QUESTION_DATA   |                                                  The location of the question data file                                                  |  qData.json   |   :x:    |
+|     MSG_DATA     |                       The location of the downloaded message data. It can be carried over from the download script                       |   msgs.json   |   :x:    |
+|    DUEL_DATA     |                                                      The location of the duel data                                                       |  duels.json   |   :x:    |
+|    PARENT_ID     |                    The ID of the parent channel (category) that the bot will work in. Also the location of the duels                     |   \<none\>    |  :heavy_check_mark:  |
+|      TOKEN       |                                                         The token of the **bot**                                                         |   \<none\>    |  :heavy_check_mark:  |
