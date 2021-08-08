@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Client, Guild, GuildChannel, GuildMember, MessageEmbed, TextBasedChannels, User } from "discord.js"
 import dotenv from "dotenv"
 import { questionMgr } from "./Components/calsses"
