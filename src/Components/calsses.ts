@@ -97,7 +97,7 @@ class userMgr {
         if (correct == "yes") {
             this.cache[user].right++
             this.cache[user].streak++
-            this.cache[user].streakP = this.steakPointCalc(this.cache[user].streak)
+            this.cache[user].streakP += this.steakPointCalc(this.cache[user].streak)
             if (this.cache[user].scores.streak < this.cache[user].streak) this.cache[user].scores.streak = this.cache[user].streak //i think this is faster than ++
         } else if (correct == "no") {
             this.cache[user].wrong++
