@@ -55,17 +55,9 @@ client.on("ready", async () => {
     await main.init()
 
     if (COMMANDS_UPDATED) {
-        const commands = await axios.get(
-            `https://discord.com/api/applications/` + client.user?.id + `/commands`,
-            { headers: { Authorization: `Bot ${TOKEN}` } }
-        );
-        if (commands.data.length == Commands.length) {
-            console.log("yessir (no commands added");
-            return;
-        }
-        for (const command of Commands) {
-            await client.application?.commands.create(command);
-        }
+        Commands.forEach(async (v) => {
+            await client.application?.commands.create(v)
+        })
         console.log("yessir (commands added!)");
     }
 });
