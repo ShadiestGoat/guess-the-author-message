@@ -55,7 +55,6 @@ class userMgr {
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return
         this.safeGuardW = true
-        console.log(JSON.stringify(this.cache))
         await writeFile(this.location, JSON.stringify(this.cache) ?? {})
         this.safeGuardW = false
     }
@@ -88,7 +87,7 @@ class userMgr {
     steakPointCalc = (steak:number):number => parseFloat((steak >= 10 ? ((steak - 4 - (steak-10)/5) / 5)
                                              : steak >= 3 ? (steak - 2)/10 
                                              : 0).toFixed(1))
-
+    prestigePointReq = (prestige:number):number => 200*2**prestige
 
         
     async answerQuestion(user:string, correct: "yes" | "no" | "skip"):Promise<userDataT> {
@@ -111,7 +110,7 @@ class userMgr {
     }
 
     async prestige(userId:string):Promise<MessageEmbed> {
-        if (200*2**this.cache[userId].prestige < this.pointCalc(userId)) {
+        if (this.prestigePointReq(this.cache[userId].prestige) < this.pointCalc(userId)) {
             this.cache[userId] = this.makeData(this.cache[userId].prestige + 1, this.cache[userId].streak)
             await this.writeData()
         } else throw 2
@@ -125,20 +124,21 @@ class userMgr {
             `Your Stats - (${this.pointCalc(user)})`,
             undefined,
             [
-                { name: "Right",              value: right.toString(),                             inline: true },
-                { name: "Wrong",              value: wrong.toString(),                             inline: true },
-                { name: "'Pure' Points",      value: (right - wrong).toString(),                   inline: true },
-                { name: "Duel Right",         value: duels.rightQ.toString(),                      inline: true },
-                { name: "Duel Wrong",         value: duels.wrongQ.toString(),                      inline: true },
-                { name: "Duel Points",        value: duel.toString(),                              inline: true },
-                { name: "Current streak",     value: streak.toString(),                            inline: true },
-                { name: "Highest streak",     value: scores.streak.toString(),                     inline: true },
-                { name: "Steak points",       value: streakP.toString(),                           inline: true },
-                { name: "Duels Won",          value: duels.won.toString(),                         inline: true },
-                { name: "Duels Lost",         value: duels.lost.toString(),                        inline: true },
-                { name: "Duel Win Steak",     value: duels.streak.toString(),                      inline: true },
-                { name: "Times Prestiged",    value: prestige.toString(),                          inline: true },
-                { name: "Prestige Multiplier",value: this.multiplyCalc(prestige).toString(),       inline: true } 
+                { name: "Right",              value: right.toString(),                                            inline: true },
+                { name: "Wrong",              value: wrong.toString(),                                            inline: true },
+                { name: "'Pure' Points",      value: (right - wrong).toString(),                                  inline: true },
+                { name: "Duel Right",         value: duels.rightQ.toString(),                                     inline: true },
+                { name: "Duel Wrong",         value: duels.wrongQ.toString(),                                     inline: true },
+                { name: "Duel Points",        value: duel.toString(),                                             inline: true },
+                { name: "Current streak",     value: streak.toString(),                                           inline: true },
+                { name: "Highest streak",     value: scores.streak.toString(),                                    inline: true },
+                { name: "Steak points",       value: streakP.toString(),                                          inline: true },
+                { name: "Duels Won",          value: duels.won.toString(),                                        inline: true },
+                { name: "Duels Lost",         value: duels.lost.toString(),                                       inline: true },
+                { name: "Duel Win Steak",     value: duels.streak.toString(),                                     inline: true },
+                { name: "Needed points",      value: this.prestigePointReq(this.cache[user].prestige).toString(), inline: true },
+                { name: "Times Prestiged",    value: prestige.toString(),                                         inline: true },
+                { name: "Prestige Multiplier",value: this.multiplyCalc(prestige).toString(),                      inline: true },
             ]
         )
     }
@@ -449,7 +449,7 @@ export class questionMgr {
         return emb
     }
 
-    async guess(userID: string, chanID: string, value: string):Promise<MessageEmbed> {
+    async guess(userID: string, chanID: string, value: string):Promise<MessageEmbed[]> {
         if (this.cache[chanID].mode == 'notguess') throw 6
         if (this.cache[chanID].date < Date.now()) {
             await this.reset(chanID)
@@ -457,21 +457,26 @@ export class questionMgr {
         }
         if (!['1', '2', '3', '4'].includes(value)) throw 4
 
-        let emb:MessageEmbed;
+        let emb:MessageEmbed[];
         if (this.cache[chanID].correct == value) {
             const usr = await this.user.answerQuestion(userID, 'yes')
-            emb = gembed(
+            emb = [gembed(
                 `Yessir you got it right!\n\`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}\nYou now have ${this.user.pointCalc(userID)} points, and a ${usr.streak} streak!`,
                 "Ding ding ding!",
                 "#00ff00"
-            );
+            )]
+            if (usr.prestige == 0 && this.user.prestigePointReq(0) >= this.user.pointCalc(userID)) emb.push(
+                gembed(`Hey, I noticed that you have enough points for a prestige! Good job :D!
+Once you prestige, you reset all your stats, but receive a bigger multiplier :D
+Don't worry, this is notification is part of the tutorial, only for the first prestige.`, "You can now prestige :D")
+            )
         } else {
             await this.user.answerQuestion(userID, 'no')
-            emb = gembed(
+            emb = [gembed(
                 `The right answer is \`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}`,
                 "No That's Wrong!",
                 "#ff0000"
-            )
+            )]
         }
         await this.reset(chanID)
         return emb

@@ -120,7 +120,7 @@ async function commander<C extends commands>(reply:(e:MessageEmbed[]) => Promise
                     const d = await main.duelGuess(chan.id, userID, typeof opt2 == "string" ? opt2 : '') ?? []
                     if (d.length) await reply(d)
                 } else {
-                    await reply([await main.guess(userID, chan.id, typeof opt2 == "string" ? opt2 : '')]);
+                    await reply(await main.guess(userID, chan.id, typeof opt2 == "string" ? opt2 : ''));
                 }
                 return;
             case 'challenge':
