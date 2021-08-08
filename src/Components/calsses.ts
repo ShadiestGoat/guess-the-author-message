@@ -51,7 +51,6 @@ class userMgr {
         }
         this.inited = true
     }
-    
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return
         this.safeGuardW = true
@@ -82,10 +81,10 @@ class userMgr {
         }
     }
     
-    pointCalc = (user:string):number => parseFloat(((this.cache[user].streakP + this.cache[user].right - this.cache[user].wrong + this.cache[user].duel)*this.multiplyCalc(this.cache[user].prestige)  - this.cache[user].costs).toFixed(1))
+    pointCalc = (user:string):number => parseFloat(((this.cache[user].streakP + this.cache[user].right - this.cache[user].wrong + this.cache[user].duel)*this.multiplyCalc(this.cache[user].prestige) - this.cache[user].costs).toFixed(1))
     multiplyCalc = (prestige:number):number => prestige == 0 ? 1 : (1 + 0.3*(2**prestige))
-    steakPointCalc = (steak:number):number => parseFloat((steak >= 10 ? ((steak - 4 - (steak-10)/5) / 5)
-                                             : steak >= 3 ? (steak - 2)/10 
+    streakPointCalc = (streak:number):number => parseFloat((streak >= 10 ? ((streak - 4 - (streak-10)/5) / 5)
+                                             : streak >= 3 ? (streak - 2)/10 
                                              : 0).toFixed(1))
     prestigePointReq = (prestige:number):number => 200*2**prestige
 
@@ -97,13 +96,13 @@ class userMgr {
         if (correct == "yes") {
             this.cache[user].right++
             this.cache[user].streak++
-            this.cache[user].streakP += this.steakPointCalc(this.cache[user].streak)
+            this.cache[user].streakP += this.streakPointCalc(this.cache[user].streak)
             if (this.cache[user].scores.streak < this.cache[user].streak) this.cache[user].scores.streak = this.cache[user].streak //i think this is faster than ++
         } else if (correct == "no") {
             this.cache[user].wrong++
             this.cache[user].streak = 0
         } else {
-            this.cache[user].costs -= this.steakPointCalc(this.cache[user].streak -1)
+            this.cache[user].costs += this.streakPointCalc(this.cache[user].streak -1)
         }
         await this.writeData()
         return this.cache[user]
@@ -132,10 +131,10 @@ class userMgr {
                 { name: "Duel Points",        value: duel.toString(),                                             inline: true },
                 { name: "Current streak",     value: streak.toString(),                                           inline: true },
                 { name: "Highest streak",     value: scores.streak.toString(),                                    inline: true },
-                { name: "Steak points",       value: streakP.toString(),                                          inline: true },
+                { name: "Streak points",      value: streakP.toString(),                                          inline: true },
                 { name: "Duels Won",          value: duels.won.toString(),                                        inline: true },
                 { name: "Duels Lost",         value: duels.lost.toString(),                                       inline: true },
-                { name: "Duel Win Steak",     value: duels.streak.toString(),                                     inline: true },
+                { name: "Duel Win Streak",    value: duels.streak.toString(),                                     inline: true },
                 { name: "Needed points",      value: this.prestigePointReq(this.cache[user].prestige).toString(), inline: true },
                 { name: "Times Prestiged",    value: prestige.toString(),                                         inline: true },
                 { name: "Prestige Multiplier",value: this.multiplyCalc(prestige).toString(),                      inline: true },

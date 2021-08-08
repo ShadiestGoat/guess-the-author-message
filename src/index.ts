@@ -55,7 +55,8 @@ client.on("ready", async () => {
 
     if (['1', 'true'].includes(COMMANDS_UPDATED ?? '')) {
         Commands.forEach(async (v) => {
-            client.application?.commands.cache.forEach(async (v) => {
+            // FIXME: dont use cache ig ??? idfk
+            client.application?.commands.forEach(async (v) => {
                 await client.application?.commands.delete(v)
             })
             await client.application?.commands.create(v)
