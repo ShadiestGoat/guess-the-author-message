@@ -29,6 +29,7 @@ type userDataT = {
 }
 
 class userMgr {
+    /** user id: data */
     public cache:Record<string, userDataT>
     public inited: boolean
     public location: string
@@ -118,9 +119,6 @@ class userMgr {
     }
 
     stats(user:string):MessageEmbed {
-        if (!Object.keys(this.cache).includes(user)) {            console.log("Wtf man 2")
-            throw 7;
-        }
         const {right, wrong, duels, streak, streakP, scores, prestige, duel} = this.cache[user]
         return gembed(
             '',
@@ -146,35 +144,31 @@ class userMgr {
     }
     leaderboard(userId: string): MessageEmbed {
         let points:[number, string][] = [];
-        for (const author in this.cache[userId]) {
+        for (const author in this.cache) {
             points.push([this.pointCalc(author), author]);
         }
         points = points.sort((a, b) => b[0] - a[0]);
         let mesg = "";
-        if (this.cache[userId]) {
-            let curIndex = 0;
-            for (const point of points) {
-                if (point[1] == userId) break;
-                curIndex++;
-            }
-            if (curIndex == 0) {
-                mesg = "Dam! Number 1, youre mr coolman!";
-            } else if (curIndex <= 3) {
-                mesg = "Top 3, pretty cool!" + ` (${curIndex + 1})`;
-            } else if (curIndex <= 7) {
-                mesg = "Top 7, not bad" + ` (${curIndex + 1})`;
-            } else {
-                mesg = "You're.. umm well.. not as good as I though you'd be...";
-            }
-        } else {
-            mesg = "You don't have any data saved!";
+        let curIndex = 0;
+        for (const point of points) {
+            if (point[1] == userId) break;
+            curIndex++;
         }
-        let gay = "";
+        if (curIndex == 0) {
+            mesg = "Dam! Number 1, youre mr coolman!";
+        } else if (curIndex <= 3) {
+            mesg = "Top 3, pretty cool!" + ` (${curIndex + 1})`;
+        } else if (curIndex <= 7) {
+            mesg = "Top 7, not bad" + ` (${curIndex + 1})`;
+        } else {
+            mesg = "You're.. umm well.. not as good as I though you'd be...";
+        }
+        let leaders = "";
         for (const num of [0, 1, 2, 3, 4, 5, 6]) {
             if (!points[num]) continue;
-            gay += `#${num + 1}\t\t<@${points[num][1]}>\t\t${points[num][0]}\n`;
+            leaders += `#${num + 1}\t\t<@${points[num][1]}>\t\t${points[num][0]}\n`;
         }
-        return gembed(`${mesg}\n${gay}`, `Leaderboards!`, `#5655b0`);
+        return gembed(`${mesg}\n${leaders}`, `Leaderboards!`, `#5655b0`);
     }
     async createByDefault(id:string):Promise<void> {
         if (Object.keys(this.cache).includes(id)) return

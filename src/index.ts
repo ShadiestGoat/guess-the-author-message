@@ -144,6 +144,7 @@ async function commander<C extends commands>(reply:(e:MessageEmbed[]) => Promise
                 await reply([help])
                 return;
             case "leaders":
+                await main.user.createByDefault(userID)
                 await reply([main.user.leaderboard(userID)]);
                 return;
             case "n":
@@ -156,6 +157,7 @@ async function commander<C extends commands>(reply:(e:MessageEmbed[]) => Promise
                 await reply([await main.s(chan.id, userID)])
                 return
             case "stats":
+                await main.user.createByDefault((opt2 as GuildMember | User)?.id ?? userID)
                 await reply([main.user.stats((opt2 as GuildMember | User)?.id ?? userID)]);
                 return;
         }
