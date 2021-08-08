@@ -53,7 +53,7 @@ const errors:Record<string, string> = {
 client.on("ready", async () => {
     await main.init()
 
-    if (COMMANDS_UPDATED) {
+    if (['1', 'true'].includes(COMMANDS_UPDATED ?? '')) {
         Commands.forEach(async (v) => {
             await client.application?.commands.create(v)
         })
