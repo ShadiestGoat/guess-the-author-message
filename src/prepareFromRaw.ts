@@ -4,7 +4,7 @@ import { writeFile } from "fs/promises"
 import { resolve } from "path"
 import Pie from "cli-pie"
 import { rand } from "./Components/tools"
-
+dotenv.config({});
 // This is the downloader section
 
 // check the env variables
@@ -65,8 +65,6 @@ const coolCol:[number, number, number][] = [
 ]
 
 const timer = (ms:number):Promise<NodeJS.Timeout> => new Promise( res => setTimeout(res, ms));
-
-dotenv.config({})
 
 async function main():Promise<void> {
     const {DW_TOKEN, DW_CHANNEL, MSG_DATA, DW_CONF} = process.env
