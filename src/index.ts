@@ -58,7 +58,9 @@ client.on("ready", async () => {
         Commands.forEach(async (v) => {
             await client.application?.commands.create(v)
         })
-        console.log("yessir (commands added!)");
+        console.log("ready (commands added!)");
+    } else {
+        console.log("ready (commands not added)");
     }
 });
 
