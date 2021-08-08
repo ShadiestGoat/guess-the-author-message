@@ -4,9 +4,6 @@ import { resolve } from "path"
 import { exit } from "process"
 import { asleep, gembed, rand } from "./tools"
 
-
-
-
 type userDataT = {
     wrong: number;
     right: number;
@@ -26,6 +23,16 @@ type userDataT = {
         duelStreak: number
     };
     prestige: number,
+}
+
+function deepFix<T extends Record<string, unknown>>(obj:T):T {
+    const robj:T = {} as T
+    for (const i in obj) {
+        if (typeof obj[i] == 'number') (robj[i] as number) = parseFloat((obj[i] as number).toFixed(1))
+        else if (typeof obj[i] == 'object')  (robj[i] as Record<string, unknown>) = deepFix(obj[i] as Record<string, unknown>)
+        else robj[i] = obj[i]
+    }
+    return robj
 }
 
 class userMgr {
@@ -54,7 +61,8 @@ class userMgr {
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return
         this.safeGuardW = true
-        await writeFile(this.location, JSON.stringify(this.cache) ?? {})
+        this.cache = deepFix(this.cache)
+        await writeFile(this.location, JSON.stringify(this.cache))
         this.safeGuardW = false
     }
 
@@ -82,7 +90,7 @@ class userMgr {
     }
     
     pointCalc = (user:string):number => parseFloat(((this.cache[user].streakP + this.cache[user].right - this.cache[user].wrong + this.cache[user].duel)*this.multiplyCalc(this.cache[user].prestige) - this.cache[user].costs).toFixed(1))
-    multiplyCalc = (prestige:number):number => prestige == 0 ? 1 : (1 + 0.3*(2**prestige))
+    multiplyCalc = (prestige:number):number => parseFloat((prestige == 0 ? 1 : (1 + 0.3*(2**prestige))).toFixed(1))
     streakPointCalc = (streak:number):number => parseFloat((streak >= 10 ? ((streak - 4 - (streak-10)/5) / 5)
                                              : streak >= 3 ? (streak - 2)/10 
                                              : 0).toFixed(1))
@@ -256,6 +264,7 @@ class DuelMgr {
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return 
         this.safeGuardW = true
+        this.cache = deepFix(this.cache)
         await writeFile(this.location, JSON.stringify(this.cache))
         this.safeGuardW = false
     }
@@ -317,6 +326,7 @@ export class questionMgr {
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return
         this.safeGuardW = true
+        this.cache = deepFix(this.cache)
         await writeFile(this.location, JSON.stringify(this.cache))
         this.safeGuardW = false
     }
