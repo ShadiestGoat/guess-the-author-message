@@ -465,7 +465,7 @@ export class questionMgr {
                 "Ding ding ding!",
                 "#00ff00"
             )]
-            if (usr.prestige == 0 && this.user.prestigePointReq(0) >= this.user.pointCalc(userID)) emb.push(
+            if (usr.prestige == 0 && this.user.prestigePointReq(0) < this.user.pointCalc(userID)) emb.push(
                 gembed(`Hey, I noticed that you have enough points for a prestige! Good job :D!
 Once you prestige, you reset all your stats, but receive a bigger multiplier :D
 Don't worry, this is notification is part of the tutorial, only for the first prestige.`, "You can now prestige :D")
