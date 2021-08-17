@@ -29,6 +29,9 @@ function deepFix<T extends Record<string, unknown>>(obj:T):T {
     const robj:T = {} as T
     for (const i in obj) {
         if (typeof obj[i] == 'number') (robj[i] as number) = parseFloat((obj[i] as number).toFixed(1))
+        else if (Array.isArray(obj[i])) {
+            (obj[i] as unknown[]) = (obj[i] as unknown[]).map(v => deepFix<T>(v as T)) //wrong typing but it doesnt really matter
+        }
         else if (typeof obj[i] == 'object')  (robj[i] as Record<string, unknown>) = deepFix(obj[i] as Record<string, unknown>)
         else robj[i] = obj[i]
     }
