@@ -1,8 +1,7 @@
 import { Client, Guild, GuildChannel, GuildMember, MessageEmbed, TextBasedChannels, User } from "discord.js"
 import dotenv from "dotenv"
-import { questionMgr } from "./Components/calsses"
-import { Commands, commands, gembed } from "./Components/tools";
-import { help } from "./Components/other"
+import { questionMgr } from "./Components/managers"
+import { Commands, commands, gembed, helpEMB } from "./Components/tools";
 import { exit } from "process";
 
 dotenv.config()
@@ -139,7 +138,7 @@ async function commander<C extends commands>(reply:(e:MessageEmbed[]) => Promise
                 await main.duelAccept(opt2, userID, opt3)
                 return
             case "help":
-                await reply([help])
+                await reply([helpEMB])
                 return;
             case "leaders":
                 await main.user.createByDefault(userID)
