@@ -349,13 +349,12 @@ export class questionMgr {
             ppl.push(opt[num])
         });
         opt[correct] = this.msgs.msgs[msgId].author
-
         return {
             opt,
             correct,
             msgId,
             mode: "guess",
-            date: new Date(Date.now() + 1000 * 3)                                        
+            date: new Date(Date.now() + 1000 * 30).valueOf()
         }
     }
     
