@@ -196,6 +196,8 @@ client.on("messageCreate", async (msg) => {
                         msg.content.substr(1) : 
                         msg.content.startsWith(`<@${client.user?.id}>`) ? 
                         msg.content.substr(18 + 3) : 
+                        msg.content.startsWith(`<@!${client.user?.id}>`) ? 
+                        msg.content.substr(18 + 3 + 1) : 
                         msg.content
                         ).trim().split(' ')[0]) as commands
     

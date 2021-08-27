@@ -176,7 +176,7 @@ class userMgr {
         let leaders = "";
         for (const num of [0, 1, 2, 3, 4, 5, 6]) {
             if (!points[num]) continue;
-            leaders += `#${num + 1}\t\t<@${points[num][1]}>\t\t${points[num][0]}\n`;
+            leaders += `#${num + 1}\t\t<@!${points[num][1]}>\t\t${points[num][0]}\n`;
         }
         return gembed(`${mesg}\n${leaders}`, `Leaderboards!`, `#5655b0`);
     }
@@ -378,7 +378,7 @@ export class questionMgr {
     }
 
     async s(chan:string, user:string):Promise<MessageEmbed> {
-        const part1 = `The right answer is \`${this.msgs.msgs[this.cache[chan].msgId].content}\` by <@${this.msgs.msgs[this.cache[chan].msgId].author}> on ${this.msgs.msgs[this.cache[chan].msgId].timesent}`
+        const part1 = `The right answer is \`${this.msgs.msgs[this.cache[chan].msgId].content}\` by <@!${this.msgs.msgs[this.cache[chan].msgId].author}> on ${this.msgs.msgs[this.cache[chan].msgId].timesent}`
         if (Object.keys(this.cache).includes(chan)) {
             if (this.cache[chan].mode == "guess" && !(this.cache[chan].date < Date.now())) await this.user.answerQuestion(user, 'skip')
         } else {
@@ -404,7 +404,7 @@ export class questionMgr {
 
     questionEmb({msgId, opt}:question):MessageEmbed {
         return gembed(
-            `Who said this?\n\`${this.msgs.msgs[msgId].content}\`\n${Object.keys(opt).map((val) => `${val}:\t<@${opt[val]}>\n`).join('')}Remember: You have 30 seconds\n\n\n\n\n\n\n\n\n\n\n\n:D`,
+            `Who said this?\n\`${this.msgs.msgs[msgId].content}\`\n${Object.keys(opt).map((val) => `${val}:\t<@!${opt[val]}>\n`).join('')}Remember: You have 30 seconds\n\n\n\n\n\n\n\n\n\n\n\n:D`,
         )
     }
 
@@ -415,14 +415,14 @@ export class questionMgr {
         if (this.duels.cache.info[chanID].game.question.correct == value) {
             this.duels.cache.info[chanID].game[this.duels.cache.info[chanID].game.map[userID]]++
             emb.push(gembed(
-                `Yessir you got it right!\n\`${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].content}\` is said by <@${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].author}> on ${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].timesent}`,
+                `Yessir you got it right!\n\`${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].content}\` is said by <@!${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].author}> on ${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].timesent}`,
                 "Ding ding ding!",
                 "#00ff00"
             ))
         } else {
-            if (this.duels.cache.info[chanID].game.failed == this.duels.cache.info[chanID].game.map[userID]) return [gembed(`You already had a go at this, <@${userID}>!`, '>:{', '#ff0000')]
+            if (this.duels.cache.info[chanID].game.failed == this.duels.cache.info[chanID].game.map[userID]) return [gembed(`You already had a go at this, <@!${userID}>!`, '>:{', '#ff0000')]
             if (this.duels.cache.info[chanID].game.failed) {
-                emb[0] = gembed(`It apears as both of you have failed! Neither shall receive a point\n${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].content}\` is said by <@${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].author}> on ${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].timesent}`, 'Both of you are dumb,', 'RED')
+                emb[0] = gembed(`It apears as both of you have failed! Neither shall receive a point\n${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].content}\` is said by <@!${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].author}> on ${this.msgs.msgs[this.duels.cache.info[chanID].game.question.msgId].timesent}`, 'Both of you are dumb,', 'RED')
             } else {
                 newQ = false
                 this.duels.cache.info[chanID].game.failed = this.duels.cache.info[chanID].game.map[userID]
@@ -467,13 +467,14 @@ export class questionMgr {
             await this.reset(chanID)
             throw 3
         }
+
         if (!['1', '2', '3', '4'].includes(value)) throw 4
 
         let emb:MessageEmbed[];
         if (this.cache[chanID].correct == value) {
             const usr = await this.user.answerQuestion(userID, 'yes')
             emb = [gembed(
-                `Yessir you got it right!\n\`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}\nYou now have ${this.user.pointCalc(userID)} points, and a ${usr.streak} streak!`,
+                `Yessir you got it right!\n\`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@!${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}\nYou now have ${this.user.pointCalc(userID)} points, and a ${usr.streak} streak!`,
                 "Ding ding ding!",
                 "#00ff00"
             )]
@@ -485,7 +486,7 @@ Don't worry, this is notification is part of the tutorial, only for the first pr
         } else {
             await this.user.answerQuestion(userID, 'no')
             emb = [gembed(
-                `The right answer is \`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}`,
+                `The right answer is \`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@!${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}`,
                 "No That's Wrong!",
                 "#ff0000"
             )]
@@ -512,7 +513,7 @@ Don't worry, this is notification is part of the tutorial, only for the first pr
                 await this.duels.writeData()
             } else throw 'd2'
         } else throw 'd3'
-        return gembed(`Hey <@${opponent}>! You've been invited to a duel by <@${requester}>. The bid is ${bid}. The winner has a net gain of that bid, and the loser a net loss of that bid
+        return gembed(`Hey <@!${opponent}>! You've been invited to a duel by <@!${requester}>. The bid is ${bid}. The winner has a net gain of that bid, and the loser a net loss of that bid
 If you don't wanna duel, just ignore this. If you choose to accept it the following will happen:
 1. A new channel will be created
 3. Rapid fire question will be asked
@@ -531,7 +532,7 @@ If they are right, the gain 1 point. If they are wrong, they get to shut up unti
             parent: process.env.PARENT_ID,
             topic: `${requester} ${opponent}`
         })
-        const msg = await chan.send(`<@${requester}> <@${opponent}`)
+        const msg = await chan.send(`<@!${requester}> <@!${opponent}`)
         await msg.delete()
         this.duels.cache.occupiedUsers.push(requester, opponent)
         this.duels.cache.info[chan.id] = {
@@ -577,7 +578,7 @@ If they are right, the gain 1 point. If they are wrong, they get to shut up unti
         this.user.cache[losID].duels.streak = 0
 
         await (chan as TextBasedChannels).send({embeds: [
-            gembed(`Congrats to <@${this.duels.cache.info[chanID][winner]}>! You have just won ${this.duels.cache.info[chanID].bid} :D`, 'Game finished', '#00ff00')
+            gembed(`Congrats to <@!${this.duels.cache.info[chanID][winner]}>! You have just won ${this.duels.cache.info[chanID].bid} :D`, 'Game finished', '#00ff00')
         ]})
         delete this.duels.cache.info[chanID]
         await this.user.writeData()
@@ -592,10 +593,10 @@ If they are right, the gain 1 point. If they are wrong, they get to shut up unti
         this.duels.cache.requests[requester][this.duels.cache.requests[requester].indexOf(info)] = this.duels.cache.requests[requester][this.duels.cache.requests[requester].length-1];
         this.duels.cache.requests[requester].pop();
         await (await this.client.users.fetch(requester)).send({embeds: [
-            gembed(`Heya, your duel with <@${opponent}> has been denied by them`)
+            gembed(`Heya, your duel with <@!${opponent}> has been denied by them`)
         ]})
         await (await this.client.users.fetch(opponent)).send({embeds: [
-            gembed(`Heya, your duel with <@${requester}> has been successfully denied`)
+            gembed(`Heya, your duel with <@!${requester}> has been successfully denied`)
         ]})
         await this.duels.writeData()
     }
