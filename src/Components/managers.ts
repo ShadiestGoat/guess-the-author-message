@@ -355,7 +355,7 @@ export class questionMgr {
             correct,
             msgId,
             mode: "guess",
-            date: new Date(Date.now() + 30000)
+            date: new Date(Date.now() + 1000 * 3)                                        
         }
     }
     
