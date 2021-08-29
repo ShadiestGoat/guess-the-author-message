@@ -475,7 +475,7 @@ export class questionMgr {
             emb = [gembed(
                 `Yessir you got it right!\n\`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@!${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}\nYou now have ${this.user.pointCalc(userID)} points, and a ${usr.streak} streak!`,
                 "Ding ding ding!",
-                usr.streak >= 30 ? "#ffd300" : "#00ff00"
+                usr.streak >= 30 ? "#ffa700" : "#00ff00"
             )]
             if (usr.prestige == 0 && this.user.prestigePointReq(0) < this.user.pointCalc(userID)) emb.push(
                 gembed(`Hey, I noticed that you have enough points for a prestige! Good job :D!
