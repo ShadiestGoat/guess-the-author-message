@@ -256,7 +256,7 @@ class DuelMgr {
             if ((await readFile(this.location, {encoding: 'utf-8'}))[0] != '{') {
                 await writeFile(this.location, JSON.stringify(this.cache), {encoding: 'utf-8'})
             } else {
-                this.cache = (await import(this.location)).default
+                this.cache = Object.assign(this.cache, (await import(this.location)).default) //in case new stuff is added
             }
         } catch {
             await writeFile(this.location, JSON.stringify(this.cache), {encoding: 'utf-8'})
