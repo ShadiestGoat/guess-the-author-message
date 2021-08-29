@@ -132,10 +132,10 @@ async function commander<C extends commands>(reply:(e:MessageEmbed[]) => Promise
                 await main.duelDeny(opt2, userID)
                 return
             case 'accept':
-                if (typeof opt2 != 'string') throw 8
+                if (typeof opt2 != "object" || typeof opt2.id != "string") throw 8
                 if (typeof opt3 == 'string') throw 8
                 if (!opt3) throw 8
-                await main.duelAccept(opt2, userID, opt3)
+                await main.duelAccept(opt2.id, userID, opt3)
                 return
             case "help":
                 await reply([helpEMB])
