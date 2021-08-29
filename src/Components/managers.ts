@@ -25,19 +25,6 @@ type userDataT = {
     prestige: number,
 }
 
-function deepFix<T extends Record<string, unknown>>(obj:T):T {
-    const robj:T = {} as T
-    for (const i in obj) {
-        if (typeof obj[i] == 'number') (robj[i] as number) = parseFloat((obj[i] as number).toFixed(1))
-        else if (Array.isArray(obj[i])) {
-            (obj[i] as unknown[]) = (obj[i] as unknown[]).map(v => deepFix<T>(v as T)) //wrong typing but it doesnt really matter
-        }
-        else if (typeof obj[i] == 'object')  (robj[i] as Record<string, unknown>) = deepFix(obj[i] as Record<string, unknown>)
-        else robj[i] = obj[i]
-    }
-    return robj
-}
-
 class userMgr {
     /** user id: data */
     public cache:Record<string, userDataT>
@@ -64,7 +51,6 @@ class userMgr {
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return
         this.safeGuardW = true
-        this.cache = deepFix(this.cache)
         await writeFile(this.location, JSON.stringify(this.cache))
         this.safeGuardW = false
     }
@@ -267,7 +253,6 @@ class DuelMgr {
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return 
         this.safeGuardW = true
-        this.cache = deepFix(this.cache)
         await writeFile(this.location, JSON.stringify(this.cache))
         this.safeGuardW = false
     }
@@ -329,7 +314,6 @@ export class questionMgr {
     async writeData():Promise<void> {
         if (this.safeGuardW || !this.inited) return
         this.safeGuardW = true
-        this.cache = deepFix(this.cache)
         await writeFile(this.location, JSON.stringify(this.cache))
         this.safeGuardW = false
     }
