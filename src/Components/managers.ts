@@ -94,7 +94,7 @@ class userMgr {
     
     pointCalc = (user:string):number => parseFloat(((this.cache[user].streakP + this.cache[user].right - this.cache[user].wrong + this.cache[user].duel)*this.multiplyCalc(this.cache[user].prestige) - this.cache[user].costs).toFixed(1))
     multiplyCalc = (prestige:number):number => parseFloat((prestige == 0 ? 1 : (1 + 0.3*(2**prestige))).toFixed(1))
-    streakPointCalc = (streak:number):number => parseFloat((streak >= 10 ? ((streak - 4 - (streak-10)/5) / 5)
+    streakPointCalc = (streak:number):number => parseFloat((streak >= 50 ? streak/2.5  : streak >= 30 ? (streak - 2)/4 : streak >= 10 ? ((streak - 4 - (streak-10)/6) / 5)
                                              : streak >= 3 ? (streak - 2)/10 
                                              : 0).toFixed(1))
     prestigePointReq = (prestige:number):number => 200*2**prestige
@@ -475,7 +475,7 @@ export class questionMgr {
             emb = [gembed(
                 `Yessir you got it right!\n\`${this.msgs.msgs[this.cache[chanID].msgId].content}\` is said by <@!${this.msgs.msgs[this.cache[chanID].msgId].author}> on ${this.msgs.msgs[this.cache[chanID].msgId].timesent}\nYou now have ${this.user.pointCalc(userID)} points, and a ${usr.streak} streak!`,
                 "Ding ding ding!",
-                "#00ff00"
+                usr.streak >= 30 ? "#ffd300" : "#00ff00"
             )]
             if (usr.prestige == 0 && this.user.prestigePointReq(0) < this.user.pointCalc(userID)) emb.push(
                 gembed(`Hey, I noticed that you have enough points for a prestige! Good job :D!
